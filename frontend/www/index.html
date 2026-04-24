@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitAI Coach</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <div class="phone-frame">
+
+      <!-- CLAUDE STYLE SIDE MENU -->
+      <div id="coachMenuOverlay" class="coach-menu-overlay" onclick="toggleCoachMenu(false)"></div>
+
+      <aside id="coachSideMenu" class="coach-side-menu">
+        <div class="coach-side-menu-header">
+          <div>
+            <h3>FitAI Coach</h3>
+            <p>Smart AI Menu</p>
+          </div>
+          <button type="button" class="coach-close-btn" onclick="toggleCoachMenu(false)">✕</button>
+        </div>
+
+        <button type="button" class="coach-side-item primary-drawer-action" onclick="startNewChat()">
+          ➕ New Chat
+        </button>
+
+        <div class="coach-side-menu-list">
+          <button type="button" class="coach-side-item" onclick="handleMenuClick('chat')">💬 Previous Chats</button>
+          <button type="button" class="coach-side-item" onclick="handleMenuClick('progress')">📈 Progress History</button>
+          <button type="button" class="coach-side-item" onclick="handleMenuClick('profile')">👤 Profile</button>
+          <button type="button" class="coach-side-item" onclick="handleMenuClick('settings')">⚙️ Settings</button>
+          <button type="button" class="coach-side-item" onclick="handleMenuClick('voice')">🎙 Voice Coach</button>
+        </div>
+
+        <div class="drawer-divider"></div>
+
+        <div class="drawer-section-title">Recent</div>
+
+        <div id="drawerRecentChats">
+          <div class="drawer-empty-state">No chats yet</div>
+        </div>
+      </aside>
+
+    <!-- TOPBAR -->
+<header class="topbar premium-app-topbar">
+  <div class="topbar-left">
+    <div class="brand-logo-wrap">
+      <img src="assets/logo-fitai-x.png" alt="FitAI X Logo" class="brand-logo-image">
+    </div>
+
+    <div class="topbar-brand-copy">
+      <div class="topbar-eyebrow">PREMIUM INTELLIGENCE</div>
+      <h1 class="brand-logo-text">FitAI X</h1>
+      <p>Elite body transformation system</p>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <button type="button" class="topbar-circle-btn" onclick="switchScreen('coach')">🤖</button>
+  </div>
+</header>
+      <main class="app-content">
+        <!-- HOME -->
+        <section id="screen-home" class="screen active-screen">
+          <div class="hero-card premium-hero-card premium-hero-image" id="heroSection">
+            <div class="hero-image-overlay"></div>
+
+            <div class="hero-copy hero-image-content">
+              <div class="hero-top-row">
+                <span class="hero-tag">Elite Fitness AI</span>
+                <span class="hero-mini-chip">Train • Transform • Progress</span>
+              </div>
+
+              <h2>Build a stronger, leaner, more powerful body with your AI coach.</h2>
+              <p>
+                Get a smart workout plan, body-focused guidance, recovery advice,
+                and daily fitness motivation designed for your real transformation.
+              </p>
+
+              <div class="hero-cta-row">
+                <button class="primary-btn big-btn hero-main-btn" onclick="switchScreen('coach')">
+                  Start Your Plan
+                </button>
+                <button class="secondary-btn hero-secondary-btn" type="button" onclick="switchScreen('progress')">
+                  View Progress
+                </button>
+              </div>
+            </div>
+
+            <div class="hero-glow-orb"></div>
+          </div>
+
+          <div class="stats-row premium-stats-row">
+            <div class="mini-stat-card premium-stat-card">
+              <span class="mini-label">Level</span>
+              <strong id="homeLevelStat">1</strong>
+              <small class="mini-stat-foot">Current growth stage</small>
+            </div>
+            <div class="mini-stat-card premium-stat-card">
+              <span class="mini-label">XP</span>
+              <strong id="homeXPStat">0</strong>
+              <small class="mini-stat-foot">Earn through habits</small>
+            </div>
+            <div class="mini-stat-card premium-stat-card">
+              <span class="mini-label">Streak</span>
+              <strong id="homeStreakStat">0</strong>
+              <small class="mini-stat-foot">Consistency matters</small>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h3>Your Goal</h3>
+                <p>Choose quickly, then refine inside the Coach dashboard</p>
+              </div>
+            </div>
+
+            <div class="quick-goals">
+              <button type="button" onclick="setGoal('Weight Loss')">Weight Loss</button>
+              <button type="button" onclick="setGoal('Muscle Gain')">Muscle Gain</button>
+              <button type="button" onclick="setGoal('Body Recomposition')">Body Recomp</button>
+              <button type="button" onclick="setGoal('General Fitness')">General Fitness</button>
+            </div>
+
+            <div class="summary-grid">
+              <div class="summary-item">
+                <span>Name</span>
+                <strong id="homeNameValue">Not set</strong>
+              </div>
+              <div class="summary-item">
+                <span>Goal</span>
+                <strong id="homeGoalValue">Not set</strong>
+              </div>
+              <div class="summary-item">
+                <span>Workout</span>
+                <strong id="homeWorkoutValue">Not set</strong>
+              </div>
+              <div class="summary-item">
+                <span>Language</span>
+                <strong id="homeLanguageValue">English</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h3>Today Check-In</h3>
+                <p>Let the coach decide how hard you should train today</p>
+              </div>
+            </div>
+
+            <div class="checkin-grid">
+              <input type="number" id="sleepHours" min="0" max="24" step="0.5" placeholder="Sleep hours">
+
+              <select id="moodSelect">
+                <option value="">Select mood</option>
+                <option value="Excellent">Excellent</option>
+                <option value="Good">Good</option>
+                <option value="Okay">Okay</option>
+                <option value="Low">Low</option>
+                <option value="Stressed">Stressed</option>
+              </select>
+
+              <select id="energyLevel">
+                <option value="">Energy level</option>
+                <option value="1">1 - Very low</option>
+                <option value="2">2 - Low</option>
+                <option value="3">3 - Slightly low</option>
+                <option value="4">4 - Below average</option>
+                <option value="5">5 - Normal</option>
+                <option value="6">6 - Decent</option>
+                <option value="7">7 - Good</option>
+                <option value="8">8 - Strong</option>
+                <option value="9">9 - Very strong</option>
+                <option value="10">10 - Peak</option>
+              </select>
+
+              <select id="sorenessLevel">
+                <option value="">Body soreness</option>
+                <option value="1">1 - None</option>
+                <option value="2">2 - Very light</option>
+                <option value="3">3 - Light</option>
+                <option value="4">4 - Mild</option>
+                <option value="5">5 - Moderate</option>
+                <option value="6">6 - Noticeable</option>
+                <option value="7">7 - High</option>
+                <option value="8">8 - Very high</option>
+                <option value="9">9 - Extreme</option>
+                <option value="10">10 - Painful</option>
+              </select>
+
+              <select id="motivationLevel">
+                <option value="">Motivation</option>
+                <option value="1">1 - Very low</option>
+                <option value="2">2 - Low</option>
+                <option value="3">3 - Slightly low</option>
+                <option value="4">4 - Below average</option>
+                <option value="5">5 - Normal</option>
+                <option value="6">6 - Decent</option>
+                <option value="7">7 - Good</option>
+                <option value="8">8 - High</option>
+                <option value="9">9 - Very high</option>
+                <option value="10">10 - Peak</option>
+              </select>
+            </div>
+
+            <button class="primary-btn full-btn" type="button" onclick="analyzeCheckIn()">
+              Analyze My Day
+            </button>
+
+            <div id="checkinResult" class="checkin-result hidden-checkin"></div>
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h3>Meal & Water Tracker</h3>
+                <p>Track hydration and meals so your coach can guide you better</p>
+              </div>
+            </div>
+
+            <div class="water-target-row">
+              <input type="number" id="waterTarget" min="500" step="100" placeholder="Water target (ml)">
+              <button class="secondary-btn" type="button" onclick="updateWaterTarget()">Save Target</button>
+            </div>
+
+            <div class="water-progress-box">
+              <div class="water-progress-top">
+                <strong id="waterProgressText">0 / 3000 ml</strong>
+                <span id="waterPercentText">0%</span>
+              </div>
+              <div class="water-bar">
+                <div id="waterFill" class="water-fill"></div>
+              </div>
+            </div>
+
+            <div class="water-actions">
+              <button type="button" class="water-btn" onclick="addWater(250)">+250 ml</button>
+              <button type="button" class="water-btn" onclick="addWater(500)">+500 ml</button>
+              <button type="button" class="water-btn" onclick="addWater(1000)">+1000 ml</button>
+              <button type="button" class="water-btn reset-water" onclick="resetWater()">Reset</button>
+            </div>
+
+            <div class="meal-check-list">
+              <label class="meal-check-item">
+                <input type="checkbox" id="mealBreakfast" onchange="toggleMealState('breakfast')">
+                <span>Breakfast done</span>
+              </label>
+
+              <label class="meal-check-item">
+                <input type="checkbox" id="mealLunch" onchange="toggleMealState('lunch')">
+                <span>Lunch done</span>
+              </label>
+
+              <label class="meal-check-item">
+                <input type="checkbox" id="mealDinner" onchange="toggleMealState('dinner')">
+                <span>Dinner done</span>
+              </label>
+
+              <label class="meal-check-item">
+                <input type="checkbox" id="mealSnack" onchange="toggleMealState('snack')">
+                <span>Healthy snack / protein meal done</span>
+              </label>
+            </div>
+
+            <div id="nutritionStatus" class="nutrition-status">
+              Your hydration and meals will appear here.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h3>Weekly Planner</h3>
+                <p>Your goal-based weekly training structure</p>
+              </div>
+            </div>
+
+            <div id="weeklyPlanner" class="weekly-planner"></div>
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h3>Daily Motivation</h3>
+                <p>Keep momentum every day</p>
+              </div>
+            </div>
+            <div id="homeMotivationQuote" class="motivation-box">
+              Small wins create massive transformations.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h3>Daily Reminder</h3>
+                <p>Set your workout reminder time</p>
+              </div>
+            </div>
+
+            <div class="reminder-row">
+              <input type="time" id="reminderTime">
+              <button class="secondary-btn" type="button" onclick="saveReminder()">Save</button>
+            </div>
+
+            <div id="reminderStatus" class="nutrition-status">
+              No reminder set yet.
+            </div>
+          </div>
+        </section>
+
+        <!-- COACH -->
+        <section id="screen-coach" class="screen">
+          <div class="coach-dashboard-wrap">
+            <div class="coach-dashboard-topbar premium-coach-topbar premium-coach-header">
+  <div class="coach-top-left">
+    <button type="button" id="coachMenuBtn" class="coach-menu-btn premium-icon-btn" onclick="toggleCoachMenu(true)">
+      ☰
+    </button>
+
+    <div class="coach-dashboard-title premium-coach-title">
+      <span class="coach-mini-label">YOUR AI COACH</span>
+      <h2>Coach</h2>
+      <p>Plan, chat, and transform</p>
+    </div>
+  </div>
+
+  <button type="button" class="chat-icon-btn premium-icon-btn accent-btn" onclick="startNewChat()" title="New chat">
+    ＋
+  </button>
+</div>
+            <div class="card premium-form-card">
+              <div class="section-head">
+                <div>
+                  <h3>Build Your Plan</h3>
+                  <p>Fill your body details and generate a premium AI fitness plan</p>
+                </div>
+              </div>
+
+              <div class="plan-card-top-note">
+                <span class="inline-premium-pill">Step 1</span>
+                <small>Enter your details clearly for a better AI result</small>
+              </div>
+
+              <div class="form-grid">
+                <input type="text" id="name" placeholder="Your name">
+                <input type="number" id="age" placeholder="Your age">
+
+                <input type="number" id="weight" placeholder="Your weight (kg)">
+                <input type="number" id="height" placeholder="Your height (cm)">
+
+                <select id="gender">
+                  <option value="">Select gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+
+                <select id="workoutPlace">
+                  <option value="">Where will you work out?</option>
+                  <option value="Home Workout">Home Workout</option>
+                  <option value="Gym Workout">Gym Workout</option>
+                </select>
+
+                <select id="goal">
+                  <option value="">What is your goal?</option>
+                  <option value="Weight Loss">Weight Loss</option>
+                  <option value="Muscle Gain">Muscle Gain</option>
+                  <option value="Body Recomposition">Body Recomposition</option>
+                  <option value="Posture Improvement">Posture Improvement</option>
+                  <option value="General Fitness">General Fitness</option>
+                </select>
+
+                <select id="chatLanguage">
+                  <option value="English">English</option>
+                  <option value="Sinhala">Sinhala</option>
+                  <option value="Tamil">Tamil</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="card premium-upload-card">
+              <div class="section-head">
+                <div>
+                  <h3>Body Photos</h3>
+                  <p>Optional uploads for better analysis</p>
+                </div>
+              </div>
+
+              <div class="plan-card-top-note">
+                <span class="inline-premium-pill">Step 2</span>
+                <small>You can upload front, side, and back photos</small>
+              </div>
+
+              <div class="upload-stack">
+                <div class="upload-box" onclick="document.getElementById('frontPhoto').click()">
+                  <label>📸 Front Photo</label>
+                  <p class="upload-text">Tap anywhere to upload</p>
+                  <p class="file-name" id="frontFileName"></p>
+                  <input type="file" id="frontPhoto" accept="image/*" hidden>
+                  <img id="frontPreview" class="preview" alt="Front preview">
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    onclick="removeImage('frontPhoto','frontPreview','frontFileName','frontRemoveBtn', event)"
+                    id="frontRemoveBtn"
+                  >✕</button>
+                </div>
+
+                <div class="upload-box" onclick="document.getElementById('sidePhoto').click()">
+                  <label>📸 Side Photo</label>
+                  <p class="upload-text">Tap anywhere to upload</p>
+                  <p class="file-name" id="sideFileName"></p>
+                  <input type="file" id="sidePhoto" accept="image/*" hidden>
+                  <img id="sidePreview" class="preview" alt="Side preview">
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    onclick="removeImage('sidePhoto','sidePreview','sideFileName','sideRemoveBtn', event)"
+                    id="sideRemoveBtn"
+                  >✕</button>
+                </div>
+
+                <div class="upload-box" onclick="document.getElementById('backPhoto').click()">
+                  <label>📸 Back Photo</label>
+                  <p class="upload-text">Tap anywhere to upload</p>
+                  <p class="file-name" id="backFileName"></p>
+                  <input type="file" id="backPhoto" accept="image/*" hidden>
+                  <img id="backPreview" class="preview" alt="Back preview">
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    onclick="removeImage('backPhoto','backPreview','backFileName','backRemoveBtn', event)"
+                    id="backRemoveBtn"
+                  >✕</button>
+                </div>
+              </div>
+
+              <button type="button" id="generateBtn" class="primary-btn full-btn premium-generate-btn" onclick="generatePlan()">
+                Generate My Plan
+              </button>
+            </div>
+
+            <div class="card chat-card premium-chat-card">
+              <div class="section-head">
+                <div>
+                  <h3>AI Coach Chat</h3>
+                  <p>Ask anything about workouts, food, recovery, and your body goal</p>
+                </div>
+              </div>
+
+              <div class="chat-conversation-bar">
+                <div class="chat-conversation-meta">
+                  <div class="active-chat-title" id="activeChatTitle">New Chat</div>
+                  <div class="active-chat-subtitle">Your saved conversation with FitAI Coach</div>
+                </div>
+                <div class="chat-conversation-actions">
+                  <button type="button" class="chat-icon-btn" onclick="openChatHistoryPanel()" title="History">🕘</button>
+                  <button type="button" class="chat-icon-btn" onclick="startNewChat()" title="New chat">＋</button>
+                </div>
+              </div>
+
+              <div class="chat-welcome-state" id="chatWelcomeState">
+                <h4>Ask your coach anything</h4>
+                <p>
+                  Get help with workouts, meal ideas, recovery, body goals,
+                  discipline, consistency, and your next best step.
+                </p>
+              </div>
+
+              <div class="chat-suggestions-row">
+                <button type="button" class="chat-suggestion-chip" onclick="setSuggestionMessage(`Give me today's best workout based on my goal`)">
+                  Today’s workout
+                </button>
+                <button type="button" class="chat-suggestion-chip" onclick="setSuggestionMessage(`Give me a practical meal plan for today`)">
+                  Meal plan
+                </button>
+                <button type="button" class="chat-suggestion-chip" onclick="setSuggestionMessage(`How should I recover today?`)">
+                  Recovery tips
+                </button>
+              </div>
+
+              <div id="chat-box" class="hidden-chat"></div>
+
+              <div class="chat-input-helper">
+                Your coach will remember your plan, check-in, and daily nutrition when replying.
+              </div>
+
+              <div class="chat-input-row premium-chat-input-row">
+                <input id="message" placeholder="Ask your fitness coach anything.">
+                <button type="button" id="sendBtn" class="send-btn" onclick="sendMessage()">Send</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PROGRESS -->
+        <section id="screen-progress" class="screen">
+          <div class="stats-row">
+            <div class="mini-stat-card large">
+              <span class="mini-label">Current Level</span>
+              <strong id="progressLevelStat">1</strong>
+            </div>
+            <div class="mini-stat-card large">
+              <span class="mini-label">Current XP</span>
+              <strong id="progressXPStat">0 / 100</strong>
+            </div>
+          </div>
+
+          <section class="card missions-card">
+            <div class="section-head">
+              <div>
+                <h3>Daily Missions</h3>
+                <p>Complete today’s habits and earn XP</p>
+              </div>
+            </div>
+
+            <div class="level-box">
+              <div class="level-top">
+                <span id="levelText">Level 1</span>
+                <span id="levelXPText">0 / 100 XP</span>
+              </div>
+              <div class="xp-bar">
+                <div id="xpFill" class="xp-fill"></div>
+              </div>
+            </div>
+
+            <div id="missionsList" class="missions-list">
+              <label class="mission-item">
+                <input type="checkbox" class="mission-check" id="missionWorkout">
+                <span class="mission-custom"></span>
+                <div class="mission-info">
+                  <strong>Workout Completed</strong>
+                  <small>Finish your main workout for today</small>
+                </div>
+                <span class="mission-xp">+25 XP</span>
+              </label>
+
+              <label class="mission-item">
+                <input type="checkbox" class="mission-check" id="missionWater">
+                <span class="mission-custom"></span>
+                <div class="mission-info">
+                  <strong>Water Goal Hit</strong>
+                  <small>Drink your daily water target</small>
+                </div>
+                <span class="mission-xp">+15 XP</span>
+              </label>
+
+              <label class="mission-item">
+                <input type="checkbox" class="mission-check" id="missionProtein">
+                <span class="mission-custom"></span>
+                <div class="mission-info">
+                  <strong>Protein Goal Hit</strong>
+                  <small>Eat enough protein for your body goal</small>
+                </div>
+                <span class="mission-xp">+20 XP</span>
+              </label>
+
+              <label class="mission-item">
+                <input type="checkbox" class="mission-check" id="missionWeight">
+                <span class="mission-custom"></span>
+                <div class="mission-info">
+                  <strong>Weight Logged</strong>
+                  <small>Update your body progress today</small>
+                </div>
+                <span class="mission-xp">+10 XP</span>
+              </label>
+            </div>
+
+            <div class="mission-footer">
+              <button type="button" class="secondary-btn" onclick="resetTodayProgress()">Reset Today</button>
+              <div id="missionQuote" class="mission-quote">Train like your future self is watching.</div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="section-head">
+              <div>
+                <h3>Achievement Badges</h3>
+                <p>Unlock rewards by staying consistent</p>
+              </div>
+            </div>
+
+            <div class="badges-grid">
+              <div class="badge-item locked" id="badge-streak3">
+                <div class="badge-icon">🔥</div>
+                <div class="badge-text">
+                  <strong>3 Day Streak</strong>
+                  <small>Keep your streak for 3 days</small>
+                </div>
+              </div>
+
+              <div class="badge-item locked" id="badge-level2">
+                <div class="badge-icon">⭐</div>
+                <div class="badge-text">
+                  <strong>Level 2</strong>
+                  <small>Reach level 2</small>
+                </div>
+              </div>
+
+              <div class="badge-item locked" id="badge-level3">
+                <div class="badge-icon">👑</div>
+                <div class="badge-text">
+                  <strong>Level 3</strong>
+                  <small>Reach level 3</small>
+                </div>
+              </div>
+
+              <div class="badge-item locked" id="badge-all-missions">
+                <div class="badge-icon">🏆</div>
+                <div class="badge-text">
+                  <strong>Perfect Day</strong>
+                  <small>Complete all daily missions</small>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="section-head">
+              <div>
+                <h3>Weight Progress</h3>
+                <p>Your saved body weight history</p>
+              </div>
+            </div>
+
+            <div id="chart-wrap" style="display: none;">
+              <canvas id="weightChart"></canvas>
+            </div>
+          </section>
+        </section>
+
+        <!-- PROFILE -->
+        <section id="screen-profile" class="screen">
+          <div class="profile-hero card">
+            <div class="profile-avatar">🏋️</div>
+            <h3 id="profileName">Your Profile</h3>
+            <p id="profileSub">Fill your details in Coach screen</p>
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h3>Body Stats</h3>
+                <p>Saved from your latest plan generation</p>
+              </div>
+            </div>
+
+            <div class="summary-grid">
+              <div class="summary-item">
+                <span>Age</span>
+                <strong id="profileAge">-</strong>
+              </div>
+              <div class="summary-item">
+                <span>Weight</span>
+                <strong id="profileWeight">-</strong>
+              </div>
+              <div class="summary-item">
+                <span>Height</span>
+                <strong id="profileHeight">-</strong>
+              </div>
+              <div class="summary-item">
+                <span>Gender</span>
+                <strong id="profileGender">-</strong>
+              </div>
+              <div class="summary-item">
+                <span>Goal</span>
+                <strong id="profileGoal">-</strong>
+              </div>
+              <div class="summary-item">
+                <span>Workout</span>
+                <strong id="profileWorkout">-</strong>
+              </div>
+              <div class="summary-item">
+                <span>BMI</span>
+                <strong id="profileBMI">-</strong>
+              </div>
+              <div class="summary-item">
+                <span>Language</span>
+                <strong id="profileLanguage">-</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h3>Today Status</h3>
+                <p>Your latest readiness and check-in signals</p>
+              </div>
+            </div>
+
+            <div class="summary-grid">
+              <div class="summary-item">
+                <span>Sleep</span>
+                <strong id="profileSleep">-</strong>
+              </div>
+              <div class="summary-item">
+                <span>Energy</span>
+                <strong id="profileEnergy">-</strong>
+              </div>
+              <div class="summary-item">
+                <span>Soreness</span>
+                <strong id="profileSoreness">-</strong>
+              </div>
+              <div class="summary-item">
+                <span>Motivation</span>
+                <strong id="profileMotivation">-</strong>
+              </div>
+              <div class="summary-item">
+                <span>Mood</span>
+                <strong id="profileMood">-</strong>
+              </div>
+              <div class="summary-item">
+                <span>Training Type</span>
+                <strong id="profileTrainingType">-</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h3>Nutrition Snapshot</h3>
+                <p>Your latest hydration and meal state</p>
+              </div>
+            </div>
+
+            <div id="profileNutritionStatus" class="nutrition-status">
+              Nutrition summary will appear here.
+            </div>
+          </div>
+        </section>
+
+        <!-- ROUTINE PLAYER -->
+        <section id="screen-routine" class="screen">
+          <div class="routine-player-wrap">
+
+            <div class="routine-player-top">
+              <button type="button" class="routine-back-btn" onclick="switchScreen('coach')">←</button>
+
+              <div class="routine-player-title-wrap">
+                <div class="routine-player-mini">Routine A1</div>
+                <h2 id="routinePlanTitle">Workout Player</h2>
+                <p id="routinePlanSubtitle">AI-selected exercise animations for your plan</p>
+              </div>
+
+              <button type="button" class="routine-regenerate-btn" onclick="generateRoutineFromPlan()">
+                Regenerate
+              </button>
+            </div>
+
+            <div class="routine-day-tabs" id="routineDayTabs">
+              <button type="button" class="routine-day-tab active">Day 1</button>
+            </div>
+
+            <div class="routine-card-dark">
+              <div class="routine-card-topline">
+                <div class="routine-sequence" id="routineSequenceText">1 of 1</div>
+                <div class="routine-focus" id="routineFocusText">Chest + Core</div>
+              </div>
+
+              <div class="routine-animation-stage">
+                <div class="routine-anim-shell">
+                  <div class="routine-muscle-label" id="routineMuscleLabel">Chest • Triceps • Core</div>
+<div id="routineAnimationViewport" class="routine-animation-viewport">
+  <img
+    id="routineWorkoutImage"
+    src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=900&q=80"
+    alt="Workout animation"
+    class="routine-workout-image"
+  >
+</div>
+                </div>
+              </div>
+
+              <div class="routine-exercise-main">
+                <h3 id="routineExerciseName">Pushup</h3>
+                <p id="routineExerciseNote">Keep your body straight and lower slowly with control.</p>
+              </div>
+
+              <div class="routine-stats-grid">
+                <div class="routine-stat-box">
+                  <span>Sets</span>
+                  <strong id="routineSetsValue">4</strong>
+                </div>
+                <div class="routine-stat-box">
+                  <span>Reps</span>
+                  <strong id="routineRepsValue">12</strong>
+                </div>
+                <div class="routine-stat-box">
+                  <span>Rest</span>
+                  <strong id="routineRestValue">45s</strong>
+                </div>
+              </div>
+
+              <div class="routine-timer-box">
+                <div class="routine-timer-top">
+                  <span>Live Timer</span>
+                  <span id="routineTimerStatus">Ready</span>
+                </div>
+
+                <div class="routine-time-value" id="routineTimeValue">00:30</div>
+
+                <div class="routine-progress-track">
+                  <div class="routine-progress-fill" id="routineProgressFill"></div>
+                </div>
+
+                <div class="routine-count-row">
+                  <div class="routine-count-pill">
+                    Reps Count: <strong id="routineRepCounter">0</strong>
+                  </div>
+                  <div class="routine-count-pill">
+                    Set: <strong id="routineSetCounter">1</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="routine-controls-row">
+                <button type="button" class="routine-control-btn muted" onclick="prevRoutineExercise()">
+                  ◀ Prev
+                </button>
+                <button type="button" class="routine-control-btn strong" onclick="toggleRoutineTimer()">
+                  Start / Pause
+                </button>
+                <button type="button" class="routine-control-btn done" onclick="markRoutineDone()">
+                  ✔ Done
+                </button>
+                <button type="button" class="routine-control-btn muted" onclick="nextRoutineExercise()">
+                  Next ▶
+                </button>
+              </div>
+
+              <div class="routine-secondary-row">
+                <button type="button" class="routine-small-btn" onclick="resetRoutineTimer()">
+                  Reset Timer
+                </button>
+                <button type="button" class="routine-small-btn" onclick="playRoutineBeep()">
+                  Test Sound
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+           <!-- BOTTOM NAV -->
+<nav class="bottom-nav premium-bottom-nav">
+  <button type="button" class="nav-btn active" data-screen="home" onclick="switchScreen('home')">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-text">Home</span>
+  </button>
+
+  <button type="button" class="nav-btn" data-screen="coach" onclick="switchScreen('coach')">
+    <span class="nav-icon">💬</span>
+    <span class="nav-text">Coach</span>
+  </button>
+
+  <button type="button" class="nav-btn premium-nav-center" onclick="switchScreen('coach')">
+    <span class="nav-icon">＋</span>
+    <span class="nav-text">Start</span>
+  </button>
+
+  <button type="button" class="nav-btn" data-screen="progress" onclick="switchScreen('progress')">
+    <span class="nav-icon">📊</span>
+    <span class="nav-text">Progress</span>
+  </button>
+
+  <button type="button" class="nav-btn" data-screen="profile" onclick="switchScreen('profile')">
+    <span class="nav-icon">👤</span>
+    <span class="nav-text">Profile</span>
+  </button>
+</nav>
+      <!-- GLOBAL OVERLAY -->
+      <div id="globalPanelOverlay" class="global-panel-overlay" onclick="closeAllPanels()"></div>
+
+      <!-- CHAT HISTORY PANEL -->
+      <aside id="chatHistoryPanel" class="coach-panel side-panel">
+        <div class="panel-header">
+          <div>
+            <h3>Previous Chats</h3>
+            <p>Your saved AI coach conversations</p>
+          </div>
+          <button type="button" class="panel-close-btn" onclick="closeChatHistoryPanel(); closeGlobalOverlay();">✕</button>
+        </div>
+
+        <div class="panel-actions-row">
+          <button type="button" class="secondary-btn" onclick="startNewChat(); closeChatHistoryPanel(); closeGlobalOverlay();">New Chat</button>
+          <button type="button" class="secondary-btn danger-soft-btn" onclick="clearAllChats()">Clear All</button>
+        </div>
+
+        <div id="chatHistoryList" class="chat-history-list">
+          <div class="empty-panel-state">No previous chats yet.</div>
+        </div>
+      </aside>
+
+      <!-- SETTINGS PANEL -->
+      <aside id="settingsPanel" class="coach-panel side-panel">
+        <div class="panel-header">
+          <div>
+            <h3>Settings</h3>
+            <p>Customize your FitAI experience</p>
+          </div>
+          <button type="button" class="panel-close-btn" onclick="closeSettingsPanel(); closeGlobalOverlay();">✕</button>
+        </div>
+
+        <div class="settings-list">
+          <div class="settings-group">
+            <label class="settings-label" for="themeSelect">Theme</label>
+            <select id="themeSelect">
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </div>
+
+          <div class="settings-group">
+            <label class="settings-label" for="settingsLanguage">Language</label>
+            <select id="settingsLanguage">
+              <option value="English">English</option>
+              <option value="Sinhala">Sinhala</option>
+              <option value="Tamil">Tamil</option>
+            </select>
+          </div>
+
+          <div class="settings-group">
+            <label class="settings-label" for="replyStyle">Reply Style</label>
+            <select id="replyStyle">
+              <option value="balanced">Balanced</option>
+              <option value="friendly">Friendly</option>
+              <option value="motivational">Motivational</option>
+              <option value="strict">Strict</option>
+            </select>
+          </div>
+
+          <label class="settings-toggle-row">
+            <div>
+              <strong>Voice Enabled</strong>
+              <small>Allow voice-based coaching input</small>
+            </div>
+            <input type="checkbox" id="voiceEnabled">
+          </label>
+
+          <label class="settings-toggle-row">
+            <div>
+              <strong>Auto Save Chats</strong>
+              <small>Save conversations to previous chats</small>
+            </div>
+            <input type="checkbox" id="autoSaveChats">
+          </label>
+
+          <label class="settings-toggle-row">
+            <div>
+              <strong>Daily Reminders</strong>
+              <small>Enable daily workout reminder alerts</small>
+            </div>
+            <input type="checkbox" id="dailyReminderEnabled">
+          </label>
+
+          <label class="settings-toggle-row">
+            <div>
+              <strong>Sound Effects</strong>
+              <small>Play small UI interaction sounds later</small>
+            </div>
+            <input type="checkbox" id="soundEnabled">
+          </label>
+
+          <button type="button" class="primary-btn full-btn" onclick="saveSettings()">
+            Save Settings
+          </button>
+        </div>
+      </aside>
+
+      <!-- VOICE PANEL -->
+      <aside id="voicePanel" class="coach-panel bottom-sheet-panel">
+        <div class="panel-header">
+          <div>
+            <h3>Voice Coach</h3>
+            <p>Talk to FitAI using your voice</p>
+          </div>
+          <button type="button" class="panel-close-btn" onclick="closeVoicePanel(); closeGlobalOverlay();">✕</button>
+        </div>
+
+        <div class="voice-panel-body">
+          <div class="voice-orb-wrap">
+            <button type="button" id="voiceMicBtn" class="voice-mic-btn" onclick="toggleVoiceCoach()">
+              🎙
+            </button>
+          </div>
+
+          <div id="voiceCoachStatus" class="voice-status">
+            Voice coach is ready.
+          </div>
+
+          <div class="voice-panel-actions">
+            <button type="button" class="secondary-btn" onclick="toggleVoiceCoach()">Start / Stop</button>
+            <button type="button" class="secondary-btn" onclick="closeVoicePanel(); closeGlobalOverlay();">Close</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+ 
+</body>
+</html>

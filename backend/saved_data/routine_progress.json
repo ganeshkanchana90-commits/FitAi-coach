@@ -1,0 +1,28 @@
+{
+  "default_user": {
+    "day_0_exercise_1": {
+      "day_index": 0,
+      "exercise_index": 1,
+      "completed": true,
+      "updated_at": "2026-04-20T10:20:43.984730"
+    },
+    "day_0_exercise_2": {
+      "day_index": 0,
+      "exercise_index": 2,
+      "completed": true,
+      "updated_at": "2026-04-20T10:20:46.011725"
+    },
+    "day_1_exercise_0": {
+      "day_index": 1,
+      "exercise_index": 0,
+      "completed": true,
+      "updated_at": "2026-04-20T10:20:47.704571"
+    },
+    "day_1_exercise_1": {
+      "day_index": 1,
+      "exercise_index": 1,
+      "completed": true,
+      "updated_at": "2026-04-20T10:20:49.604668"
+    }
+  }
+}

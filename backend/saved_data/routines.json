@@ -1,0 +1,177 @@
+{
+  "default_user": {
+    "user_id": "default_user",
+    "profile": {
+      "user_id": "default_user",
+      "name": "kanchana ganesh",
+      "age": 32,
+      "weight": 55.0,
+      "height": 653.0,
+      "gender": "Male",
+      "workout_place": "Home Workout",
+      "goal": "Muscle Gain",
+      "level": "Beginner",
+      "workout_days": 5,
+      "language": "Sinhala",
+      "injuries": "",
+      "equipment": ""
+    },
+    "routine": {
+      "routine_name": "Routine A1",
+      "summary": "A smart home workout routine designed for beginner body transformation with live exercise demos.",
+      "days": [
+        {
+          "day": "Day 1",
+          "focus": "Chest + Triceps",
+          "exercises": [
+            {
+              "name": "Pushup",
+              "sets": 4,
+              "reps": 25,
+              "rest_seconds": 45,
+              "animation_key": "pushup_live",
+              "notes": "Keep your body straight and lower with control."
+            },
+            {
+              "name": "Bench Dips with Feet on Floor",
+              "sets": 3,
+              "reps": 15,
+              "rest_seconds": 45,
+              "animation_key": "bench_dips_live",
+              "notes": "Use a chair or bench and move slowly."
+            },
+            {
+              "name": "Plank",
+              "sets": 3,
+              "reps": 40,
+              "rest_seconds": 45,
+              "animation_key": "plank_live",
+              "notes": "Hold tight and do not drop the hips."
+            }
+          ]
+        },
+        {
+          "day": "Day 2",
+          "focus": "Core + Cardio",
+          "exercises": [
+            {
+              "name": "Bike Crunch",
+              "sets": 3,
+              "reps": 30,
+              "rest_seconds": 60,
+              "animation_key": "bike_crunch_live",
+              "notes": "Touch opposite elbow and knee."
+            },
+            {
+              "name": "Mountain Climber",
+              "sets": 3,
+              "reps": 20,
+              "rest_seconds": 45,
+              "animation_key": "mountain_climber_live",
+              "notes": "Move fast but keep control."
+            },
+            {
+              "name": "Jumping Jack",
+              "sets": 3,
+              "reps": 25,
+              "rest_seconds": 30,
+              "animation_key": "jumping_jack_live",
+              "notes": "Good for full body warm cardio."
+            }
+          ]
+        },
+        {
+          "day": "Day 3",
+          "focus": "Legs + Glutes",
+          "exercises": [
+            {
+              "name": "Squat",
+              "sets": 4,
+              "reps": 15,
+              "rest_seconds": 60,
+              "animation_key": "squat_live",
+              "notes": "Push hips back and keep chest high."
+            },
+            {
+              "name": "Lunges",
+              "sets": 3,
+              "reps": 10,
+              "rest_seconds": 45,
+              "animation_key": "lunges_live",
+              "notes": "Step forward and lower gently."
+            },
+            {
+              "name": "Glute Bridge",
+              "sets": 3,
+              "reps": 15,
+              "rest_seconds": 45,
+              "animation_key": "glute_bridge_live",
+              "notes": "Pause at the top for best glute activation."
+            }
+          ]
+        },
+        {
+          "day": "Day 4",
+          "focus": "Upper Body + Core",
+          "exercises": [
+            {
+              "name": "Pushup",
+              "sets": 3,
+              "reps": 20,
+              "rest_seconds": 45,
+              "animation_key": "pushup_live",
+              "notes": "Steady reps and proper breathing."
+            },
+            {
+              "name": "Bike Crunch",
+              "sets": 3,
+              "reps": 20,
+              "rest_seconds": 45,
+              "animation_key": "bike_crunch_live",
+              "notes": "Twist from the core."
+            },
+            {
+              "name": "Plank",
+              "sets": 3,
+              "reps": 35,
+              "rest_seconds": 45,
+              "animation_key": "plank_live",
+              "notes": "Stay stable and keep abs tight."
+            }
+          ]
+        },
+        {
+          "day": "Day 5",
+          "focus": "Conditioning",
+          "exercises": [
+            {
+              "name": "Jumping Jack",
+              "sets": 3,
+              "reps": 30,
+              "rest_seconds": 30,
+              "animation_key": "jumping_jack_live",
+              "notes": "Warm the body first."
+            },
+            {
+              "name": "Mountain Climber",
+              "sets": 3,
+              "reps": 20,
+              "rest_seconds": 30,
+              "animation_key": "mountain_climber_live",
+              "notes": "Fast but clean reps."
+            },
+            {
+              "name": "Squat",
+              "sets": 3,
+              "reps": 15,
+              "rest_seconds": 45,
+              "animation_key": "squat_live",
+              "notes": "Finish with strong leg work."
+            }
+          ]
+        }
+      ]
+    },
+    "created_at": "2026-04-20T10:20:18.230935"
+  }
+}
